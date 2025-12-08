@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @TableName("user")
+@Builder
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,7 +39,7 @@ public class User implements Serializable {
      * 用户名
      */
     @TableField("username")
-    private String username;
+    private String userName;
 
     /**
      * 密码 (BCrypt加密)
