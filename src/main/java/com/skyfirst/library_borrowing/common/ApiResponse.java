@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @date: 2025/12/8 23:22
  */
 @Data
-public class R<T> implements Serializable {
+public class ApiResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,11 +20,11 @@ public class R<T> implements Serializable {
     private long timestamp;
 
     // 私有构造器，强制使用静态方法
-    private R() {
+    private ApiResponse() {
         this.timestamp = System.currentTimeMillis();
     }
 
-    private R(Integer code, String message, T data) {
+    private ApiResponse(Integer code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
@@ -34,7 +34,7 @@ public class R<T> implements Serializable {
     /**
      * 成功返回结果
      */
-    public static <T> R<T> success() {
+    public static <T> ApiResponse<T> success() {
         return success(null);
     }
 
@@ -42,8 +42,8 @@ public class R<T> implements Serializable {
      * 成功返回结果
      * @param data 获取的数据
      */
-    public static <T> R<T> success(T data) {
-        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
     }
 
     /**
@@ -51,37 +51,37 @@ public class R<T> implements Serializable {
      * @param data 获取的数据
      * @param message 提示信息
      */
-    public static <T> R<T> success(T data, String message) {
-        return new R<>(ResultCode.SUCCESS.getCode(), message, data);
+    public static <T> ApiResponse<T> success(T data, String message) {
+        return new ApiResponse<>(ResultCode.SUCCESS.getCode(), message, data);
     }
 
     /**
      * 失败返回结果
      * @param errorCode 错误码枚举
      */
-    public static <T> R<T> failed(IResultCode errorCode) {
-        return new R<>(errorCode.getCode(), errorCode.getMessage(), null);
+    public static <T> ApiResponse<T> failed(IResultCode errorCode) {
+        return new ApiResponse<>(errorCode.getCode(), errorCode.getMessage(), null);
     }
 
     /**
      * 失败返回结果（自定义提示信息）
      * @param message 错误信息
      */
-    public static <T> R<T> failed(String message) {
-        return new R<>(ResultCode.FAILED.getCode(), message, null);
+    public static <T> ApiResponse<T> failed(String message) {
+        return new ApiResponse<>(ResultCode.FAILED.getCode(), message, null);
     }
 
     /**
      * 失败返回结果（自定义错误码和信息）
      */
-    public static <T> R<T> failed(Integer code, String message) {
-        return new R<>(code, message, null);
+    public static <T> ApiResponse<T> failed(Integer code, String message) {
+        return new ApiResponse<>(code, message, null);
     }
 
     /**
      * 参数验证失败返回结果
      */
-    public static <T> R<T> validateFailed(String message) {
-        return new R<>(ResultCode.VALIDATE_FAILED.getCode(), message, null);
+    public static <T> ApiResponse<T> validateFailed(String message) {
+        return new ApiResponse<>(ResultCode.VALIDATE_FAILED.getCode(), message, null);
     }
 }

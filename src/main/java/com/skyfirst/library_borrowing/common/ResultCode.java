@@ -13,16 +13,12 @@ package com.skyfirst.library_borrowing.common;
         UNAUTHORIZED(401, "未授权"),
         FORBIDDEN(403, "禁止访问"),
         FAILED(400, "操作失败"),
-    VALIDATE_FAILED(404,"参数校验失败"),
+        VALIDATE_FAILED(404,"参数校验失败"),
 
-    // 下面是业务逻辑错误码
-
-    PASSWORD_ERROR(1002, "账号或密码错误"),
-
-
+        // 下面是业务逻辑错误码
+        PASSWORD_ERROR(1002, "账号或密码错误"),
 
     ;
-
 
         private final int code;
         private final String message;
@@ -31,13 +27,13 @@ package com.skyfirst.library_borrowing.common;
             this.message = message;
         }
 
-    @Override
-    public Integer getCode() {
-        return code;
-    }
+        @Override
+        public Integer getCode() {
+            return code;
+        }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
+        @Override
+        public String getMessage() {
+            return message;
+        }
 }

@@ -7,14 +7,14 @@ package com.skyfirst.library_borrowing.common.context;
 public class BaseContext {
 
     // 使用 ThreadLocal 隔离不同线程的变量
-    private static final ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Long> threadLocal = new ThreadLocal<>();
 
   /**
    * @description: 设置当前线程的用户ID
    * @author: bingxunqing
    * @date: 2025/12/8 23:54
    */
-    public static void setCurrentId(int id) {
+    public static void setCurrentId(Long id) {
         threadLocal.set(id);
     }
 
@@ -23,7 +23,7 @@ public class BaseContext {
      * @author: bingxunqing
      * @date: 2025/12/8 23:54
      */
-    public static Integer getCurrentId() {
+    public static Long getCurrentId() {
         return threadLocal.get();
     }
 

@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.util.Arrays;
-
 /**
  * <p>
  * 用户表 服务实现类
@@ -28,7 +26,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public User login(String userName, String password) {
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>();
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUserName, userName);
         User user = userMapper.selectOne(queryWrapper);
 
@@ -37,7 +35,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 
         String encryptedInput = DigestUtils.md5DigestAsHex(password.getBytes());
-//String encryptedInput = password;
+        //String encryptedInput = password;
         if(!encryptedInput.equals(user.getPassword())){
             throw new RuntimeException("用户名或密码错误");
         }
@@ -46,8 +44,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public int register(User user) {
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<User>();
+    public boolean register(User user) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUserName, user.getUserName());
         Long count = userMapper.selectCount(queryWrapper);
         if(count>0){
@@ -59,11 +57,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setPassword(encryptedPassword);
 
 
-        return userMapper.insert(user);
+        return save(user);
     }
 
     @Override
-    public User getUserInfo(int userId) {
+    public User getUserInfo(Long userId) {
         return userMapper.selectById(userId);
     }
 }

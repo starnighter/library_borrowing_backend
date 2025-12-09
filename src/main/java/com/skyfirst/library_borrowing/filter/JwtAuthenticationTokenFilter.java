@@ -59,8 +59,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             // 存进去的时候通常是Integer或Long，取出来转String再转Long最稳妥
             Object userIdObj = claims.get("userId");
             if (userIdObj != null) {
-                int userId = Integer.valueOf(userIdObj.toString());
-
+                // int userId = Integer.valueOf(userIdObj.toString());
+                Long userId = Long.parseLong(userIdObj.toString());
                 // Spring Security 用户已登录
                 // 第三个参数是权限列表，目前给空列表
                 UsernamePasswordAuthenticationToken authentication =

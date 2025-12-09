@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-11-08
  */
 @RestController
-@RequestMapping("/borrowRecord")
+@RequestMapping("/borrow")
 public class BorrowRecordController {
 
 }

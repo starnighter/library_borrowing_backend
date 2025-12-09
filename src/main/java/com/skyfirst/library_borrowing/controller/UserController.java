@@ -1,9 +1,8 @@
 package com.skyfirst.library_borrowing.controller;
 
-import com.skyfirst.library_borrowing.common.R;
+import com.skyfirst.library_borrowing.common.ApiResponse;
 import com.skyfirst.library_borrowing.common.ResultCode;
 import com.skyfirst.library_borrowing.common.context.BaseContext;
-import com.skyfirst.library_borrowing.dto.UserInfoDTO;
 import com.skyfirst.library_borrowing.dto.UserLoginDTO;
 import com.skyfirst.library_borrowing.dto.UserRegisterDTO;
 import com.skyfirst.library_borrowing.entity.User;
@@ -35,14 +34,14 @@ public class UserController {
     private final IUserService userService;
     private final JwtUtils jwtUtils;
     @PostMapping("/login")
-    public R<LoginVO> login(@RequestBody UserLoginDTO loginDTO){
+    public ApiResponse<LoginVO> login(@RequestBody UserLoginDTO loginDTO){
         User loginuser = userService.login(loginDTO.getUsername(), loginDTO.getPassword());
         if(loginuser == null){
-            return R.failed(ResultCode.PASSWORD_ERROR);
+            return ApiResponse.failed(ResultCode.PASSWORD_ERROR);
         }
         Map<String,Object> claims = new HashMap<>();
         claims.put("userId",loginuser.getId());
-String token = jwtUtils.generateJwt(claims);
+        String token = jwtUtils.generateJwt(claims);
         UserVO userVO = UserVO.builder()
                 .id(String.valueOf(loginuser.getId()) )
                 .username(loginuser.getUserName())
@@ -53,11 +52,11 @@ String token = jwtUtils.generateJwt(claims);
                 .userInfo(userVO)
                 .token(token)
                 .build();
-        return R.success(loginVO);
+        return ApiResponse.success(loginVO);
     }
 
     @PostMapping("/register")
-    public R<RegisterVO> register(@RequestBody UserRegisterDTO userDTO){
+    public ApiResponse<RegisterVO> register(@RequestBody UserRegisterDTO userDTO){
         User user = User.builder()
                 .userName(userDTO.getUsername())
                 .password(userDTO.getPassword())
@@ -65,8 +64,8 @@ String token = jwtUtils.generateJwt(claims);
                 .role("user")
                 .build();
         try{
-            int result = userService.register(user);
-            if(result <= 0){
+            boolean result = userService.register(user);
+            if(!result){
                 throw new BusinessException("注册失败");
             }
 
@@ -76,15 +75,15 @@ String token = jwtUtils.generateJwt(claims);
                     .email(user.getEmail())
                     .role(user.getRole())
                     .build();
-            return R.success(registerVO,"注册成功");
+            return ApiResponse.success(registerVO,"注册成功");
         }catch (BusinessException e){
-            return R.failed(e.getCode(),e.getMessage());
+            return ApiResponse.failed(e.getCode(),e.getMessage());
         }
     }
 
     @GetMapping("/info")
-    public R<UserVO> info(){
-        int id = BaseContext.getCurrentId();
+    public ApiResponse<UserVO> info(){
+        Long id = BaseContext.getCurrentId();
         User user = userService.getUserInfo(id);
 
         UserVO userVO = UserVO.builder()
@@ -93,7 +92,7 @@ String token = jwtUtils.generateJwt(claims);
                 .email(user.getEmail())
                 .role(user.getRole())
                 .build();
-        return R.success(userVO);
+        return ApiResponse.success(userVO);
     }
 
 }
