@@ -2,6 +2,7 @@ package com.skyfirst.library_borrowing.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.skyfirst.library_borrowing.entity.User;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
