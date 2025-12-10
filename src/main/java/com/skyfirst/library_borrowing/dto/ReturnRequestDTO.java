@@ -7,5 +7,5 @@ import lombok.Data;
  */
 @Data
 public class ReturnRequestDTO {
-    Long borrowRecordId; // 要归还的借阅记录ID (非BookID)
+    String borrowRecordId; // 要归还的借阅记录ID (非BookID)
 }

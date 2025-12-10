@@ -6,7 +6,7 @@ CREATE TABLE `user` (
                             `username` VARCHAR(50) NOT NULL COMMENT '用户名',
                             `password` VARCHAR(255) NOT NULL COMMENT '密码 (BCrypt加密)',
                             `email` VARCHAR(100) DEFAULT NULL COMMENT '电子邮箱',
-                            `role` VARCHAR(20) NOT NULL DEFAULT 'USER' COMMENT '角色 (USER, ADMIN)',
+                            `role` VARCHAR(20) NOT NULL DEFAULT 'user' COMMENT '角色 (user, admin)',
                             `is_deleted` TINYINT(1) DEFAULT 0 COMMENT '逻辑删除 0:未删除 1:已删除',
                             `gmt_create` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                             `gmt_modified` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',

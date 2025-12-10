@@ -64,4 +64,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public User getUserInfo(Long userId) {
         return userMapper.selectById(userId);
     }
+
+    @Override
+    public String getAllUsersCount() {
+        return query().eq("is_deleted",0).count().toString();
+    }
 }

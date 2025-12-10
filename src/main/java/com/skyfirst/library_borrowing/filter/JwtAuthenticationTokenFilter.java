@@ -58,7 +58,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             // 获取用户ID
             // 存进去的时候通常是Integer或Long，取出来转String再转Long最稳妥
             Object userIdObj = claims.get("userId");
-            if (userIdObj != null) {
+            Object role = claims.get("role");
+            if (userIdObj != null && role != null) {
                 // int userId = Integer.valueOf(userIdObj.toString());
                 Long userId = Long.parseLong(userIdObj.toString());
                 // Spring Security 用户已登录
@@ -69,8 +70,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
                 // 存入 BaseContext，方便 Service 业务代码使用
                 BaseContext.setCurrentId(userId);
+                BaseContext.setCurrentIsAdmin("admin".equals(role.toString()));
 
-                log.debug("JWT校验通过，用户ID: {}", userId);
+                log.debug("JWT校验通过，用户ID: {}，用户角色：{}", userId, role);
             }
         } catch (Exception e) {
             // 遇到错误（过期、格式不对等）
@@ -78,13 +80,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             // 这样 Spring Security 发现没有认证信息，会自动处理 401 响应
             log.error("Token认证失败: {}", e.getMessage());
             SecurityContextHolder.clearContext();
-            BaseContext.removeCurrentId();
+            BaseContext.remove();
         }
 
         // 继续过滤器链
         filterChain.doFilter(request, response);
 
         // 请求结束后清理 ThreadLocal
-        BaseContext.removeCurrentId();
+        BaseContext.remove();
     }
 }

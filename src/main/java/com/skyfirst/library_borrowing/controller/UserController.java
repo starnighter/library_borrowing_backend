@@ -41,6 +41,7 @@ public class UserController {
         }
         Map<String,Object> claims = new HashMap<>();
         claims.put("userId",loginuser.getId());
+        claims.put("role",loginuser.getRole());
         String token = jwtUtils.generateJwt(claims);
         UserVO userVO = UserVO.builder()
                 .id(String.valueOf(loginuser.getId()) )
@@ -74,6 +75,7 @@ public class UserController {
                     .userName(user.getUserName())
                     .email(user.getEmail())
                     .role(user.getRole())
+                    .createTime(user.getGmtCreate())
                     .build();
             return ApiResponse.success(registerVO,"注册成功");
         }catch (BusinessException e){

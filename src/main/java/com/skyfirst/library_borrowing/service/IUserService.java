@@ -17,4 +17,6 @@ public interface IUserService extends IService<User> {
     public boolean register(User user);
 
     public User getUserInfo(Long userId);
+
+    String getAllUsersCount();
 }

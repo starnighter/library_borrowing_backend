@@ -21,7 +21,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class JwtUtils {
-   private final JwtProperties jwtProperties;
+    private final JwtProperties jwtProperties;
 
     public String getTokenName() {
         return jwtProperties.getTokenName();

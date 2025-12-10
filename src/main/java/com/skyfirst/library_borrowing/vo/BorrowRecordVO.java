@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class BorrowRecordVO {
+    // 补充书名和封面图片
     private String id; // 借阅记录ID
     private String bookId; // 图书ID
     private String bookTitle; // 书名
