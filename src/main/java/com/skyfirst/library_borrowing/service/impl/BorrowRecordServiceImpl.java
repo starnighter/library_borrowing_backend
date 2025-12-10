@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -93,6 +94,10 @@ public class BorrowRecordServiceImpl extends ServiceImpl<BorrowRecordMapper, Bor
                 .page(page)
                 .getRecords();
 
+        if (borrowRecords == null || borrowRecords.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         return borrowRecords.stream()
                 .map(borrowRecord -> borrowRecord2VO(borrowRecord, borrowRecord.getBookId()))
                 .toList();
@@ -107,6 +112,10 @@ public class BorrowRecordServiceImpl extends ServiceImpl<BorrowRecordMapper, Bor
                 .page(page)
                 .getRecords();
 
+        if (borrowRecords == null || borrowRecords.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         return borrowRecords.stream()
                 .map(borrowRecord -> borrowRecord2VO(borrowRecord, borrowRecord.getBookId()))
                 .toList();
@@ -119,12 +128,17 @@ public class BorrowRecordServiceImpl extends ServiceImpl<BorrowRecordMapper, Bor
             throw new BusinessException("传入的历史数据为空，请重新传入");
         }
         List<BorrowRecord> borrowRecords = listByIds(dto.getBorrowRecordIdList());
+
+        if (borrowRecords == null || borrowRecords.isEmpty()) {
+            throw new BusinessException("传入的借阅记录ID错误，请重新传入");
+        }
+
         List<Long> filterIdList = borrowRecords.stream()
                 .filter(record -> "RETURNED".equals(record.getStatus()))
                 .map(BorrowRecord::getId)
                 .toList();
         if (!removeBatchByIds(filterIdList)) {
-            throw new BusinessException("删除历史借阅记录失败，请重试");
+            throw new BusinessException("批量删除历史借阅记录失败，请重试");
         }
     }
 
@@ -137,6 +151,10 @@ public class BorrowRecordServiceImpl extends ServiceImpl<BorrowRecordMapper, Bor
                 .like(condition, "book_title", bookTitle)
                 .page(page)
                 .getRecords();
+
+        if (borrowRecords == null || borrowRecords.isEmpty()) {
+            return Collections.emptyList();
+        }
 
         return borrowRecords.stream()
                 .map(borrowRecord -> borrowRecord2VO(borrowRecord, borrowRecord.getBookId()))
@@ -170,7 +188,8 @@ public class BorrowRecordServiceImpl extends ServiceImpl<BorrowRecordMapper, Bor
         Book book = bookMapper.selectById(bookId);
         BorrowRecordVO vo = new BorrowRecordVO();
         BeanUtils.copyProperties(borrowRecord, vo);
-        vo.setId(bookId.toString());
+        vo.setId(borrowRecord.getId().toString());
+        vo.setBookId(bookId.toString());
         vo.setBookTitle(book.getTitle());
         vo.setBookCoverUrl(book.getCoverUrl());
 

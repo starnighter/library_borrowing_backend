@@ -17,6 +17,7 @@ package com.skyfirst.library_borrowing.common;
 
         // 下面是业务逻辑错误码
         PASSWORD_ERROR(1002, "账号或密码错误"),
+        USER_NOT_EXIST(1003,"用户不存在"),
 
     ;
 

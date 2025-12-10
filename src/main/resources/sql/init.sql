@@ -60,23 +60,7 @@ CREATE TABLE `borrow_record` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='借阅记录表';
 
 
--- 4. 预约表 (reservation)
--- 存储用户的图书预约记录 (当书籍到货时通知)
-DROP TABLE IF EXISTS `reservation`;
-CREATE TABLE `reservation` (
-                                   `id` BIGINT(20) NOT NULL COMMENT '主键ID',
-                                   `user_id` BIGINT(20) NOT NULL COMMENT '用户ID',
-                                   `book_id` BIGINT(20) NOT NULL COMMENT '图书ID',
-                                   `reservation_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '预约日期',
-                                   `status` VARCHAR(20) NOT NULL DEFAULT 'PENDING' COMMENT '状态 (PENDING, AVAILABLE, FULFILLED, CANCELLED)',
-                                   `gmt_create` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                   `gmt_modified` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-                                   PRIMARY KEY (`id`),
-                                   KEY `idx_user_book` (`user_id`, `book_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='图书预约表';
-
-
--- 5. 评价表 (review)
+-- 4. 评价表 (review)
 -- 存储用户对图书的评价和打分
 DROP TABLE IF EXISTS `review`;
 CREATE TABLE `review` (
@@ -93,7 +77,7 @@ CREATE TABLE `review` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评价表';
 
 
--- 6. 通知表 (notification)
+-- 5. 通知表 (notification)
 -- 存储发送给用户的通知 (如还书提醒、预约到货)
 DROP TABLE IF EXISTS `notification`;
 CREATE TABLE `notification` (
@@ -101,7 +85,7 @@ CREATE TABLE `notification` (
                                     `user_id` BIGINT(20) NOT NULL COMMENT '接收通知的用户ID',
                                     `title` VARCHAR(255) NOT NULL COMMENT '通知标题',
                                     `content` TEXT NOT NULL COMMENT '通知内容',
-                                    `type` VARCHAR(30) NOT NULL COMMENT '通知类型 (DUE_REMINDER, RESERVATION_AVAILABLE, OVERDUE_NOTICE)',
+                                    `type` VARCHAR(30) NOT NULL DEFAULT 'COMMON' COMMENT '通知类型 (COMMON, DUE_REMINDER, OVERDUE_NOTICE)',
                                     `status` VARCHAR(20) NOT NULL DEFAULT 'UNREAD' COMMENT '状态 (UNREAD, READ)',
                                     `gmt_create` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                     PRIMARY KEY (`id`),

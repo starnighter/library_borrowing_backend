@@ -14,6 +14,7 @@ import com.skyfirst.library_borrowing.vo.RegisterVO;
 import com.skyfirst.library_borrowing.vo.UserVO;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -31,8 +32,13 @@ import java.util.Map;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
+
+    @Autowired
     private final IUserService userService;
+
+    @Autowired
     private final JwtUtils jwtUtils;
+
     @PostMapping("/login")
     public ApiResponse<LoginVO> login(@RequestBody UserLoginDTO loginDTO){
         User loginuser = userService.login(loginDTO.getUsername(), loginDTO.getPassword());
@@ -87,7 +93,9 @@ public class UserController {
     public ApiResponse<UserVO> info(){
         Long id = BaseContext.getCurrentId();
         User user = userService.getUserInfo(id);
-
+        if (user == null) {
+            return ApiResponse.success(null);
+        }
         UserVO userVO = UserVO.builder()
                 .id(String.valueOf(user.getId()) )
                 .username(user.getUserName())

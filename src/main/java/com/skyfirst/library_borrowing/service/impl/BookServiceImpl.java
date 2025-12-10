@@ -52,6 +52,10 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
                 .page(page)
                 .getRecords();
 
+        if (books == null || books.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         return books.stream()
                 .map(
                     book -> {

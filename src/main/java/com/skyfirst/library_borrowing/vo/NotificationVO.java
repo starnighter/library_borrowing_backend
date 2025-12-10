@@ -9,10 +9,13 @@ import java.time.LocalDateTime;
  */
 @Data
 public class NotificationVO {
+    // 对比 notification 表字段无 userId
     private String id;
     private String title;
     private String content;
-    private String type; // DUE_REMINDER, RESERVATION_AVAILABLE, OVERDUE_NOTICE
+    // COMMON, DUE_REMINDER, OVERDUE_NOTICE
+    // 常规通知，借阅到期还书提醒，借阅过期提醒
+    private String type;
     private String status; // UNREAD, READ
     private LocalDateTime gmtCreate; // 通知创建时间
 }
