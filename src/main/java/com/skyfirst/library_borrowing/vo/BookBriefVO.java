@@ -9,6 +9,7 @@ import lombok.Data;
 public class BookBriefVO {
     private String id;
     private String title;
+    private String publisher;
     private String author;
     private String category;
     private String coverUrl;

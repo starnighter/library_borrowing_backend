@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,7 +82,7 @@ public class UserController {
                     .userName(user.getUserName())
                     .email(user.getEmail())
                     .role(user.getRole())
-                    .createTime(user.getGmtCreate())
+                    .createTime(LocalDateTime.now())
                     .build();
             return ApiResponse.success(registerVO,"注册成功");
         }catch (BusinessException e){

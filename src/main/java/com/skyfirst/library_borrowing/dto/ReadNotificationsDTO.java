@@ -9,5 +9,5 @@ import java.util.List;
  */
 @Data
 public class ReadNotificationsDTO {
-    private List<String> notificationIdLIst;
+    private List<String> notificationIdList;
 }
