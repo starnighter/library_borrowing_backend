@@ -59,9 +59,9 @@ public class ReviewController {
             throw new BusinessException("传入的书籍ID为空，请重新传入数据");
         }
 
-        PageData<ReviewVO> pageData = reviewService.getReviewsByBookId(currentPage, pageSize, bookId);
+        PageResponse<ReviewVO> pageData = reviewService.getReviewsByBookId(currentPage, pageSize, bookId);
 
-        return ApiResponse.success(new PageResponse<>(currentPage, pageSize, pageData.getRecords(), pageData.getTotalCount()));
+        return ApiResponse.success(pageData);
     }
 }
 

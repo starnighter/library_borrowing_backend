@@ -40,6 +40,7 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
         Long userId = BaseContext.getCurrentId();
         Page<Notification> page = new Page<>(currentPage, pageSize);
         List<Notification> notifications = lambdaQuery().eq(Notification::getUserId, userId)
+                .orderByDesc(Notification::getGmtCreate)
                 .page(page)
                 .getRecords();
 

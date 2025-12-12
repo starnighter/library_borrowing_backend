@@ -49,6 +49,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
                 .like(titleCondition, Book::getTitle, title)
                 .like(authorCondition, Book::getAuthor, author)
                 .like(isbnCondition, Book::getIsbn, isbn)
+                .orderByDesc(Book::getGmtCreate)
                 .page(page)
                 .getRecords();
 
@@ -62,6 +63,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
                         BookBriefVO vo = new BookBriefVO();
                         BeanUtils.copyProperties(book, vo);
                         vo.setId(book.getId().toString());
+                        vo.setPublisher(book.getPublisher());
                         return vo;
                     }
                 ).toList();
@@ -96,6 +98,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
         BookBriefVO vo = new BookBriefVO();
         BeanUtils.copyProperties(newBook, vo);
         vo.setId(newBook.getId().toString());
+        vo.setPublisher(newBook.getPublisher());
         return vo;
     }
 
@@ -157,7 +160,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
                             BookDetailVO vo = new BookDetailVO();
                             BeanUtils.copyProperties(book, vo);
                             vo.setId(bookId);
-                            vo.setAverageRating(averageRating);
+                            vo.setAverageRating(Math.round(averageRating * 10) / 10.0);
                             return vo;
                         }
                 )

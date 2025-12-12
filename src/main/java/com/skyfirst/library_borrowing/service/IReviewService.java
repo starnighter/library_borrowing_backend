@@ -1,6 +1,7 @@
 package com.skyfirst.library_borrowing.service;
 
 import com.skyfirst.library_borrowing.common.PageData;
+import com.skyfirst.library_borrowing.common.PageResponse;
 import com.skyfirst.library_borrowing.dto.ReviewCreateDTO;
 import com.skyfirst.library_borrowing.entity.Review;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -20,5 +21,7 @@ public interface IReviewService extends IService<Review> {
 
     void deleteReview(String reviewId);
 
-    PageData<ReviewVO> getReviewsByBookId(Long currentPage, Long pageSize, String bookId);
+    PageResponse<ReviewVO> getReviewsByBookId(Long currentPage, Long pageSize, String bookId);
+
+    void deleteAppointedReview(String reviewId);
 }
