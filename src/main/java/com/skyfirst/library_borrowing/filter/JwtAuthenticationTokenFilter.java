@@ -70,7 +70,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
                 // 存入 BaseContext，方便 Service 业务代码使用
                 BaseContext.setCurrentId(userId);
-                BaseContext.setCurrentIsAdmin("admin".equals(role.toString()));
+                BaseContext.setCurrentIsAdmin("ADMIN".equals(role.toString()));
 
                 log.debug("JWT校验通过，用户ID: {}，用户角色：{}", userId, role);
             }

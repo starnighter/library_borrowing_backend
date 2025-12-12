@@ -4,7 +4,6 @@ import com.skyfirst.library_borrowing.common.ApiResponse;
 import com.skyfirst.library_borrowing.common.PageResponse;
 import com.skyfirst.library_borrowing.exception.BusinessException;
 import com.skyfirst.library_borrowing.service.IBookService;
-import com.skyfirst.library_borrowing.util.VerifyUtil;
 import com.skyfirst.library_borrowing.vo.BookBriefVO;
 import com.skyfirst.library_borrowing.vo.BookDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class BookController {
         return ApiResponse.success(vo);
     }
 
-    @GetMapping("/top-10")
+    @GetMapping("/get/top10")
     public ApiResponse<List<BookDetailVO>> getTop10Books() {
         List<BookDetailVO> top10Books = bookService.getTop10Books();
         return ApiResponse.success(top10Books);

@@ -1,6 +1,7 @@
 package com.skyfirst.library_borrowing.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.skyfirst.library_borrowing.common.PageData;
 import com.skyfirst.library_borrowing.common.context.BaseContext;
 import com.skyfirst.library_borrowing.dto.ReviewCreateDTO;
 import com.skyfirst.library_borrowing.entity.Review;
@@ -33,11 +34,10 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review> impleme
     @Autowired
     private UserMapper userMapper;
 
-    private final Long currentUserId = BaseContext.getCurrentId();
-
     @Override
     @Transactional
     public ReviewVO createReview(ReviewCreateDTO dto) {
+        Long currentUserId = BaseContext.getCurrentId();
         Review review = new Review();
         BeanUtils.copyProperties(dto,review);
         review.setUserId(currentUserId);
@@ -53,6 +53,7 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review> impleme
     @Override
     @Transactional
     public void deleteReview(String reviewId) {
+        Long currentUserId = BaseContext.getCurrentId();
         boolean success = update().eq("id", reviewId)
                 .eq("user_id", currentUserId)
                 .set("is_deleted", 1)
@@ -64,20 +65,24 @@ public class ReviewServiceImpl extends ServiceImpl<ReviewMapper, Review> impleme
     }
 
     @Override
-    public List<ReviewVO> getReviewsByBookId(Long currentPage, Long pageSize, String bookId) {
+    public PageData<ReviewVO> getReviewsByBookId(Long currentPage, Long pageSize, String bookId) {
         Page<Review> page = new Page<>(currentPage, pageSize);
 
         List<Review> reviews = lambdaQuery().eq(Review::getBookId, Long.parseLong(bookId))
                 .page(page)
                 .getRecords();
 
+        Long totalCount = page.getTotal();
+
         if (reviews == null || reviews.isEmpty()) {
-            return Collections.emptyList();
+            return new PageData<>(Collections.emptyList(), totalCount);
         }
 
-        return reviews.stream()
+        List<ReviewVO> reviewVOs = reviews.stream()
                 .map(review -> review2VO(review, review.getUserId()))
                 .toList();
+
+        return new PageData<>(reviewVOs, totalCount);
     }
 
     private ReviewVO review2VO(Review review, Long userId) {

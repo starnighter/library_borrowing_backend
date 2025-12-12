@@ -2,14 +2,13 @@ package com.skyfirst.library_borrowing.controller;
 
 import com.skyfirst.library_borrowing.common.ApiResponse;
 import com.skyfirst.library_borrowing.common.PageResponse;
+import com.skyfirst.library_borrowing.common.PageData;
 import com.skyfirst.library_borrowing.dto.ReviewCreateDTO;
 import com.skyfirst.library_borrowing.exception.BusinessException;
 import com.skyfirst.library_borrowing.service.IReviewService;
 import com.skyfirst.library_borrowing.vo.ReviewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * <p>
@@ -60,8 +59,9 @@ public class ReviewController {
             throw new BusinessException("传入的书籍ID为空，请重新传入数据");
         }
 
-        List<ReviewVO> vo = reviewService.getReviewsByBookId(currentPage, pageSize, bookId);
+        PageData<ReviewVO> pageData = reviewService.getReviewsByBookId(currentPage, pageSize, bookId);
 
-        return ApiResponse.success(new PageResponse<>(currentPage, pageSize, vo));
+        return ApiResponse.success(new PageResponse<>(currentPage, pageSize, pageData.getRecords(), pageData.getTotalCount()));
     }
 }
+

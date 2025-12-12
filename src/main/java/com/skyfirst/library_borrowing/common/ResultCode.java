@@ -7,7 +7,7 @@ package com.skyfirst.library_borrowing.common;
  * @create: 2025-12-08 22:44
  */
     public enum ResultCode implements IResultCode {
-        SUCCESS(0, "成功"),
+        SUCCESS(200, "成功"),
         ERROR(500, "失败"),
         NOT_FOUND(404, "未找到"),
         UNAUTHORIZED(401, "未授权"),

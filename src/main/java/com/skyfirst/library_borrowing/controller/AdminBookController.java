@@ -57,7 +57,6 @@ public class AdminBookController {
 
     @GetMapping("/count")
     public ApiResponse<String> getAllBooksCount() {
-        VerifyUtil.isAdmin();
         String booksCount = bookService.getAllBooksCount();
         return ApiResponse.success(booksCount);
     }

@@ -44,7 +44,8 @@ public class NotificationController {
 
     @PutMapping("/read")
     public ApiResponse<Void> readNotifications(@RequestBody ReadNotificationsDTO dto){
-        if (dto == null || dto.getNotificationIdLIst() == null || dto.getNotificationIdLIst().isEmpty()){
+        System.out.println(dto);
+        if (dto == null || dto.getNotificationIdList() == null || dto.getNotificationIdList().isEmpty()){
             throw new BusinessException("传入的阅读通知数据或通知ID列表为空，请重新传入");
         }
 

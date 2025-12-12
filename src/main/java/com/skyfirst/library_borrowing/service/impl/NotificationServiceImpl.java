@@ -50,8 +50,10 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
 
     @Override
     public String getUnreadCount() {
+        Long currentUserId = BaseContext.getCurrentId();
         return lambdaQuery()
                 .eq(Notification::getStatus, "UNREAD")
+                .eq(Notification::getUserId, currentUserId)
                 .count()
                 .toString();
     }
@@ -59,7 +61,7 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
     @Override
     @Transactional
     public void readNotifications(ReadNotificationsDTO dto) {
-        List<Long> idList = dto.getNotificationIdLIst().stream()
+        List<Long> idList = dto.getNotificationIdList().stream()
                 .map(Long::parseLong)
                 .toList();
 
